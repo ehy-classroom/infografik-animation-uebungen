@@ -1,0 +1,9 @@
+
+
+.stage {
+    position: relative;
+    width: 480px;
+    height: 320px;
+    background: lightgrey;
+    overflow: hidden;
+}
