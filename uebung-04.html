@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
+
+
+:root {
+    --duration: 2s;
+}
+
         /*clothes*/
         .dress,
         .jeans,
@@ -28,7 +34,7 @@
             top:0;
             left: 50px;
             /* border: 1px solid; */
-            animation: move-clothes 2s linear infinite;
+            animation: move-clothes var(--duration) linear infinite;
         }
 
         @keyframes move-clothes {
@@ -78,8 +84,8 @@
             left: 0;
             top: 0;
             animation: 
-            move-pieces 2s linear infinite,
-            dress 2s linear infinite;
+            move-pieces var(--duration) linear infinite,
+            dress var(--duration) linear infinite;
        
         }
 
@@ -105,7 +111,7 @@
             left: 0;
             top: 0;
             animation: 
-            move-pieces 2s linear infinite,
+            move-pieces var(--duration) linear infinite,
             jeans 3s linear infinite;
         }
 
@@ -129,7 +135,7 @@
             left: 0;
             top: 0;
             animation: 
-            move-pieces 2s linear infinite,
+            move-pieces var(--duration) linear infinite,
             socks 1s linear infinite;
         }
 
@@ -168,11 +174,11 @@
             94% {
                 transform: rotate(0deg);
             }
-            95% {
+            96% {
                 transform: rotate(10deg);
             }
 
-            97% {
+            98% {
                 transform: rotate(-10deg);
             }
             100% {
