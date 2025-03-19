@@ -40,4 +40,5 @@ Components
     height: 320px;
     background: lightgrey;
     overflow: hidden;
+    margin: 0 auto;
 }
