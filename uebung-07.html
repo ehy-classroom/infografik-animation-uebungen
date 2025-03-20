@@ -8,14 +8,35 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
-.mask {
-    
-}
+        .stage {
+            background: #000;
+        }
+
+        .mask {
+            position: absolute;
+            left: 120px;
+            top: 40px;
+            width: 200px;
+            height: 130px;
+            overflow: hidden;
+        }
 
         .sprite {
             position: absolute;
             width: 1200px;
+            animation: move-sprite 1s steps(6) infinite;
         }
+
+        @keyframes move-sprite {
+
+            0% {
+                left: 0;
+            }
+
+            100% {
+                left: -1200px;
+
+            }
     </style>
 
 </head>
@@ -29,7 +50,7 @@
     <div class="stage">
         <div class="mask">
             <figure class="sprite">
-                <img src="assets/img/muybridge-cat.jpg">
+                <img src="assets/img/muybridge-cat-cropped.jpg">
             </figure>
         </div>
     </div>
