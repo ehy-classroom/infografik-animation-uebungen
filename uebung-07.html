@@ -19,6 +19,18 @@
             width: 200px;
             height: 130px;
             overflow: hidden;
+            animation: move-mask 10s infinite;
+        }
+
+        @keyframes move-mask {
+
+            0% {
+                left: -200px;
+            }
+
+            100% {
+                left: 700px;
+            }
         }
 
         .sprite {
