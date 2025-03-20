@@ -10,7 +10,7 @@
     <style>
         .mask {
             position: relative;
-            left: 180px;
+            left: 300px;
             top: 80px;
             width: 128px;
             height: 128px;
@@ -28,19 +28,35 @@
             animation: earth-sprite 1s steps(8) infinite;
         }
 
-        @keyframes earth-sprite {
-            0% {
-                left: 0;
-            }
-
-            100% {
-                left: -1024px;
-            }
+        .info {
+            font-size: 0.6em;
+            padding: 1em;
+            width: 24em;
+            top: 20px;
+            position: absolute;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            max-height: 2rem;
+            /* Nur die Überschrift sichtbar */
+            opacity: 1;
         }
 
-        .stage {
-            background: #fff;
-            border: 1px solid #000;
+        .info.expanded {
+            max-height: 1000px;
+            /* Genug Platz für den gesamten Text */
+            opacity: 1;
+        }
+
+        .info h3,
+        .info h4,
+        .info p {
+            margin-bottom: 1em;
+        }
+
+        .info.collapsed p,
+        .info.collapsed h4 {
+            display: none;
+            /* Versteckt den Text und die Unterüberschrift */
         }
 
         .toggle-button {
@@ -50,7 +66,6 @@
             background-color: hsl(0, 0%, 80%);
             border-radius: 25px;
             cursor: pointer;
-            margin: 0 auto;
             transition: background-color 0.3s;
         }
 
@@ -73,9 +88,62 @@
             left: 27px;
         }
 
+        .toggle-info-button {
+            position: relative;
+            width: 50px;
+            height: 25px;
+            background-color: hsl(0, 0%, 80%);
+            border-radius: 25px;
+            cursor: pointer;
+
+            transition: background-color 0.3s;
+        }
+
+        .toggle-info-button.active {
+            background-color: hsl(120, 70%, 40%);
+        }
+
+        .toggle-info-circle {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 21px;
+            height: 21px;
+            background-color: white;
+            border-radius: 50%;
+            transition: left 0.3s;
+        }
+
+        .toggle-info-button.active .toggle-info-circle {
+            left: 27px;
+        }
+
         .controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 1em;
+            gap: 4rem;
+        }
+
+        .controls p {
+            font-size: 0.6em;
             text-align: center;
-            margin: 20px 0;
+            padding-top: 1em;
+        }
+
+        @keyframes earth-sprite {
+            0% {
+                left: 0;
+            }
+
+            100% {
+                left: -1024px;
+            }
+        }
+
+        .stage {
+            background: #fff;
+            border: 1px solid #000;
         }
     </style>
 
@@ -94,45 +162,106 @@
             </figure>
         </div>
 
+        <div class="info">
+            <h3>Wie schnell dreht sich die Erde?</h3>
+            <h4>Rotationsdauer</h4>
+            <p>
+                Die Erde dreht sich einmal in etwa 23 Stunden, 56 Minuten und 4 Sekunden – dies ist der sogenannte
+                siderische Tag. Im Alltag wird jedoch der mittlere Sonnentag von 24 Stunden verwendet.
+            </p>
+            <h4>Geschwindigkeit am Äquator</h4>
+            <p>
+                Am Äquator erreicht die Erdoberfläche eine lineare Geschwindigkeit von etwa 1.670 km/h (ca. 465 m/s).
+                Diese Geschwindigkeit nimmt mit zunehmender geographischer Breite ab, bis sie an den Polen praktisch
+                null ist.
+            </p>
+        </div>
+
+
     </div>
     <div class="controls">
-        <div id="toggleButton" class="toggle-button">
-            <div class="toggle-circle"></div>
+        <div>
+            <div id="toggleInfoButton" class="toggle-info-button">
+                <div class="toggle-info-circle"></div>
+            </div>
+            <p>Info</p> <!-- Label für den Info-Toggle -->
+        </div>
+        <div>
+            <div id="toggleButton" class="toggle-button">
+                <div class="toggle-circle"></div>
+            </div>
+            <p>Animation</p> <!-- Label für den Animation-Toggle -->
         </div>
     </div>
     <script>
         // Referenzen zu den HTML-Elementen
-        const sprite = document.querySelector('.sprite');
-        const toggleButton = document.getElementById('toggleButton');
+        // Diese Variablen speichern die HTML-Elemente, die wir später steuern möchten.
+        const sprite = document.querySelector('.sprite'); // Das Element mit der Klasse "sprite" (die Animation der Erde).
+        const toggleButton = document.getElementById('toggleButton'); // Der Button, der die Animation startet/stoppt.
+        const toggleInfoButton = document.getElementById('toggleInfoButton'); // Der Button, der den Infotext ein-/ausblendet.
+        const info = document.querySelector('.info'); // Das Element mit der Klasse "info" (der Infotext).
 
-        // Zustandsvariable für die Animation
-        let isAnimationRunning = false;
+        // Zustandsvariablen
+        // Diese Variablen speichern den aktuellen Zustand der Animation und des Infotexts.
+        let isAnimationRunning = false; // Gibt an, ob die Animation gerade läuft (true) oder pausiert ist (false).
+        let isInfoExpanded = false; // Gibt an, ob der Infotext gerade vollständig sichtbar ist (true) oder nicht (false).
 
         // Funktion zum Starten der Animation
+        // Diese Funktion setzt die Animation des "sprite"-Elements auf "running".
         const startAnimation = () => {
-            sprite.style.animationPlayState = 'running';
-            toggleButton.classList.add('active');
-            isAnimationRunning = true;
+            sprite.style.animationPlayState = 'running'; // Die CSS-Eigenschaft "animation-play-state" wird auf "running" gesetzt.
+            toggleButton.classList.add('active'); // Der Button erhält die Klasse "active", um den Zustand visuell darzustellen.
+            isAnimationRunning = true; // Die Zustandsvariable wird auf "true" gesetzt.
         };
 
         // Funktion zum Stoppen der Animation
+        // Diese Funktion pausiert die Animation des "sprite"-Elements.
         const stopAnimation = () => {
-            sprite.style.animationPlayState = 'paused';
-            toggleButton.classList.remove('active');
-            isAnimationRunning = false;
+            sprite.style.animationPlayState = 'paused'; // Die CSS-Eigenschaft "animation-play-state" wird auf "paused" gesetzt.
+            toggleButton.classList.remove('active'); // Die Klasse "active" wird vom Button entfernt.
+            isAnimationRunning = false; // Die Zustandsvariable wird auf "false" gesetzt.
         };
 
-        // Event-Listener für den Toggle-Button
+        // Funktion zum Einblenden des Infotexts
+        // Diese Funktion zeigt den gesamten Infotext an.
+        const expandInfo = () => {
+            info.classList.add('expanded'); // Fügt die Klasse "expanded" hinzu, um den Text sichtbar zu machen.
+            toggleInfoButton.classList.add('active'); // Der Button erhält die Klasse "active", um den Zustand visuell darzustellen.
+            isInfoExpanded = true; // Die Zustandsvariable wird auf "true" gesetzt.
+        };
+
+        // Funktion zum Ausblenden des Infotexts
+        // Diese Funktion zeigt nur die Überschrift des Infotexts an.
+        const collapseInfo = () => {
+            info.classList.remove('expanded'); // Entfernt die Klasse "expanded", um den Text auszublenden.
+            toggleInfoButton.classList.remove('active'); // Die Klasse "active" wird vom Button entfernt.
+            isInfoExpanded = false; // Die Zustandsvariable wird auf "false" gesetzt.
+        };
+
+        // Event-Listener für den Toggle-Button (Animation)
+        // Dieser Event-Listener wird ausgelöst, wenn der Animation-Toggle-Button geklickt wird.
         toggleButton.addEventListener('click', () => {
             if (isAnimationRunning) {
-                stopAnimation();
+                stopAnimation(); // Wenn die Animation läuft, wird sie gestoppt.
             } else {
-                startAnimation();
+                startAnimation(); // Wenn die Animation pausiert ist, wird sie gestartet.
             }
         });
 
-        // Animation initial stoppen
-        stopAnimation();
+        // Event-Listener für den Toggle-Button (Info)
+        // Dieser Event-Listener wird ausgelöst, wenn der Info-Toggle-Button geklickt wird.
+        toggleInfoButton.addEventListener('click', () => {
+            if (isInfoExpanded) {
+                collapseInfo(); // Wenn der Infotext sichtbar ist, wird er ausgeblendet.
+            } else {
+                expandInfo(); // Wenn der Infotext ausgeblendet ist, wird er eingeblendet.
+            }
+        });
+
+        // Initialzustand: Animation und Infotext aus
+        // Beim Laden der Seite werden die Animation und der Infotext standardmäßig deaktiviert.
+        stopAnimation(); // Die Animation wird pausiert.
+        collapseInfo(); // Der Infotext wird ausgeblendet.
     </script>
 </body>
 
