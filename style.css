@@ -1,11 +1,73 @@
 /*---------------------
 Stylesheet für Übungen Infografik Animation
-Version: 1.0
+Version: 2.0
 Author: Enno Hyttrek
 March 2025
 ---------------------*/
 
 @import url(https://rsms.me/inter/inter.css);
+
+
+/*---------------------
+RESET
+---------------------*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/*---------------------
+LAYOUT
+---------------------*/
+
+body {
+    padding: 1rem;
+}
+
+header {
+    margin-bottom: 2rem;
+}
+
+ul.gallery {
+display: flex;
+flex-wrap: wrap;
+gap: 1rem;
+}
+
+ul.gallery li {
+    position: relative;
+    list-style: none;
+    border-radius: 1rem;
+    overflow: hidden;
+    width: calc((100% - 1rem) / 2);
+}
+
+ul.gallery li a {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 1em 0.5em;
+    font-size: 0.8em;
+    font-weight: 600;
+    color: #fff;
+    background: hsla(199,42%,13%,0.8);
+}
+
 
 
 /*---------------------
@@ -42,3 +104,4 @@ Components
     overflow: hidden;
     margin: 0 auto;
 }
+

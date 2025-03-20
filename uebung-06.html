@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Übung X</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .mask {
+            position: relative;
+            left: 180px;
+            top: 80px;
+            width: 128px;
+            height: 128px;
+            overflow: hidden;
+            /* border: 1px solid; */
+        }
+
+        .sprite {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1024px;
+            height: 256px;
+            animation: earth-sprite 1s steps(8) infinite;
+        }
+
+        @keyframes earth-sprite {
+            0% {
+                left: 0;
+            }
+
+            100% {
+                left: -1024px;
+            }
+        }
+
+
+        .stage {
+            background: #fff;
+        }
+    </style>
+
+</head>
+
+<body>
+    <header>
+        <p><a href="index.html">Zurück zur Übersicht</a></p>
+        <h1>Übung 6: Sprite Animation</h1>
+    </header>
+    <div class="stage">
+
+        <div class="mask">
+            <figure class="sprite">
+                <img src="assets/img/250319-ehy-sprite-earth-a-01.png">
+            </figure>
+        </div>
+
+    </div>
+</body>
+
+</html>

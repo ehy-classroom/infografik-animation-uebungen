@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Übung 5</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+:root {
+    --color-rubber: hsl(0,89%,42%);
+    --color-rubber-hover: hsl(0,89%,55%);
+    --color-iron: hsl(199,21%,34%);
+    --color-iron-hover: hsl(199,21%,55%);
+}
+
+        #ball {
+            z-index: 10;
+            position: absolute;
+            top: 160px;
+            left: 280px;
+            width: 40px;
+            height: 40px;
+            transform-origin: 50% 100%;
+            border-radius: 50%;
+
+        }
+
+        .ball-rubber {
+            background-color: var(--color-rubber);
+            animation: bounce-rubber 1s linear infinite;
+        }
+
+        @keyframes bounce-rubber {
+            0% {
+                top: 30px;
+                animation-timing-function: ease-out;
+                transform: scale(1,1);
+            }
+
+            30% {
+                top: 160px;
+                transform: scale(1,1);
+
+            }
+
+            50% {
+                top: 160px;
+                transform: scale(2,0.5);
+            }
+
+            70% {
+                top: 160px;
+                transform: scale(0.3,2.5);
+                animation-timing-function: ease-in;
+            }
+
+            90% {
+                top: 40px;
+                transform: scale(1,1);
+            }
+
+            100% {
+                top: 30px;
+                transform: scale(1,1);
+            }
+        }
+
+
+        .ball-iron {
+            background-color: var(--color-iron);
+            animation: bounce-iron 0.5s linear 1;
+        }
+
+        @keyframes bounce-iron {
+            0% {
+                top: 30px;
+                transform: scale(1,1);
+            }
+
+            80% {
+                top: 30px;
+                animation-timing-function: ease-out;
+                transform: scale(1,1); 
+            }
+
+            90% {
+                top: 163px;
+                transform: scale(1,1);
+            }
+
+            92% {
+                top: 158px;
+                transform: scale(1,1);
+            }
+
+
+            100% {
+                top: 160px;
+                transform: scale(1,1);
+            }
+        }
+
+        #floor {
+            position: absolute;
+            top: 200px;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background-color: hsl(89, 5%, 55%);
+        }
+
+        .floor-bounce {
+            animation: bounce-floor 0.5s linear 1;
+        }
+
+        @keyframes bounce-floor {
+            0% {
+                top: 200px;
+            }
+
+            89% {
+                top: 200px;
+            }   
+            90% {
+                top: 203px;
+            }
+
+            92% {
+                top: 198px;
+            }
+
+            100% {
+                top: 200px;
+            }
+        }
+
+        .floor-no-bounce {
+            animation: none; /* Deaktiviert jegliche Animation */
+        }
+
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .controls button {
+            padding: 0.5em 1em;
+            margin: 0 1em;
+            font-size: 0.8em;
+            cursor: pointer;
+            border: none;
+            border-radius: 1em;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+
+
+        #ironButton {
+            background-color: var(--color-iron);
+        }
+
+        #ironButton:hover {
+            background-color: var(--color-iron-hover);
+        }
+
+        #rubberButton {
+            background-color: var(--color-rubber);
+        }
+
+        #rubberButton:hover {
+            background-color: var(--color-rubber-hover);
+        }
+    </style>
+
+</head>
+
+<body>
+    <header>
+        <p><a href="index.html">Zurück zur Übersicht</a></p>
+        <h1>Übung 5: Szenenwechsel (JS, Variante B)</h1>
+    </header>
+
+    <div class="stage">
+
+        <div id="ball" class="ball-iron"></div>
+
+        <div id="floor" class="floor-bounce"></div>
+
+    </div>
+
+    <div class="controls">
+        <button id="ironButton">Ball aus Eisen</button>
+        <button id="rubberButton">Ball aus Gummi</button>
+    </div>
+
+    <script>
+        // Referenzen zu den HTML-Elementen
+        const ball = document.getElementById('ball');
+        const ironButton = document.getElementById('ironButton');
+        const rubberButton = document.getElementById('rubberButton');
+        const floor = document.getElementById('floor'); // Referenz zum Boden (ID floor)
+    
+        // Zustandsvariablen
+        let isSwitchingToIron = false;
+        let isIronActive = false; // Zeigt an, ob der "iron"-Zustand aktiv ist
+
+        // Funktion zum Starten der Iron-Animationen
+        const startIronAnimations = () => {
+            // Überprüfen, ob die Iron-Animation bereits aktiv ist
+            if (!isIronActive) {
+                // Ball-Animation starten
+                ball.style.animation = "none"; // Animation zurücksetzen
+                ball.style.backgroundColor = "var(--color-iron)"; // Farbe auf Iron setzen
+                void ball.offsetWidth; // Reflow auslösen
+                ball.style.animation = "bounce-iron 0.5s linear 1"; // Neue Animation setzen
+
+                // Boden-Animation starten
+                floor.style.animation = "none"; // Animation zurücksetzen
+                void floor.offsetWidth; // Reflow auslösen
+                floor.style.animation = "bounce-floor 0.5s linear 1"; // Neue Animation setzen
+
+                isIronActive = true; // Setzt den Zustand auf "iron aktiv"
+            }
+        };
+
+        // Event-Listener für den "Ball aus Eisen"-Button
+        ironButton.addEventListener('click', () => {
+            if (ball.style.animation.includes("bounce-rubber")) {
+                isSwitchingToIron = true; // Markiert den Wechsel, falls die Rubber-Animation läuft
+            } else {
+                startIronAnimations(); // Startet direkt die Iron-Animationen
+            }
+        });
+    
+        // Event-Listener für den "Ball aus Gummi"-Button
+        rubberButton.addEventListener('click', () => {
+            // Ball-Animation zurücksetzen
+            ball.style.animation = "none";
+            ball.style.backgroundColor = "var(--color-rubber)"; // Farbe auf Rubber setzen
+            void ball.offsetWidth; // Reflow auslösen
+            ball.style.animation = "bounce-rubber 1s linear infinite"; // Rubber-Animation setzen
+
+            // Boden-Animation deaktivieren
+            floor.style.animation = "none";
+
+            isSwitchingToIron = false; // Zurücksetzen, da wir zu "rubber" wechseln
+            isIronActive = false; // Setzt den Zustand auf "iron nicht aktiv"
+        });
+    
+        // Event-Listener für das Ende eines Animationsdurchlaufs (bei "rubber")
+        ball.addEventListener('animationiteration', () => {
+            if (isSwitchingToIron && ball.style.animation.includes("bounce-rubber")) {
+                startIronAnimations(); // Startet die Iron-Animationen nach Abschluss der Rubber-Animation
+                isSwitchingToIron = false; // Wechsel abgeschlossen
+            }
+        });
+    </script>
+</body>
+</html>
