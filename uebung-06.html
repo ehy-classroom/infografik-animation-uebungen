@@ -38,9 +38,44 @@
             }
         }
 
-
         .stage {
             background: #fff;
+            border: 1px solid #000;
+        }
+
+        .toggle-button {
+            position: relative;
+            width: 50px;
+            height: 25px;
+            background-color: hsl(0, 0%, 80%);
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 0 auto;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-button.active {
+            background-color: hsl(120, 70%, 40%);
+        }
+
+        .toggle-circle {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 21px;
+            height: 21px;
+            background-color: white;
+            border-radius: 50%;
+            transition: left 0.3s;
+        }
+
+        .toggle-button.active .toggle-circle {
+            left: 27px;
+        }
+
+        .controls {
+            text-align: center;
+            margin: 20px 0;
         }
     </style>
 
@@ -60,6 +95,45 @@
         </div>
 
     </div>
+    <div class="controls">
+        <div id="toggleButton" class="toggle-button">
+            <div class="toggle-circle"></div>
+        </div>
+    </div>
+    <script>
+        // Referenzen zu den HTML-Elementen
+        const sprite = document.querySelector('.sprite');
+        const toggleButton = document.getElementById('toggleButton');
+
+        // Zustandsvariable für die Animation
+        let isAnimationRunning = false;
+
+        // Funktion zum Starten der Animation
+        const startAnimation = () => {
+            sprite.style.animationPlayState = 'running';
+            toggleButton.classList.add('active');
+            isAnimationRunning = true;
+        };
+
+        // Funktion zum Stoppen der Animation
+        const stopAnimation = () => {
+            sprite.style.animationPlayState = 'paused';
+            toggleButton.classList.remove('active');
+            isAnimationRunning = false;
+        };
+
+        // Event-Listener für den Toggle-Button
+        toggleButton.addEventListener('click', () => {
+            if (isAnimationRunning) {
+                stopAnimation();
+            } else {
+                startAnimation();
+            }
+        });
+
+        // Animation initial stoppen
+        stopAnimation();
+    </script>
 </body>
 
 </html>
