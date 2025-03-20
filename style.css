@@ -1,6 +1,6 @@
 /*---------------------
 Stylesheet für Übungen Infografik Animation
-Version: 2.0
+Version: 2.1
 Author: Enno Hyttrek
 March 2025
 ---------------------*/
@@ -42,6 +42,12 @@ header {
     margin-bottom: 2rem;
 }
 
+.container {
+    max-width: calc(1200 / 16 * 1rem);
+    margin: 0 auto;
+    padding: 1rem;
+}
+
 ul.gallery {
 display: flex;
 flex-wrap: wrap;
@@ -68,10 +74,14 @@ ul.gallery li a {
     background: hsla(199,42%,13%,0.8);
 }
 
-
+.footnote {
+position: absolute;
+bottom: 0;
+padding: 0.5em;
+}
 
 /*---------------------
-Typography
+TYPOGRAPHY
 ---------------------*/
 
 /*https://rsms.me/inter/*/
@@ -92,9 +102,22 @@ body {
     line-height: 1.3;
 }
 
+.footnote,
+footer {
+    font-size: 0.8em;
+}
 
 /*---------------------
-Components
+COLOR & STYLE
+---------------------*/
+
+.footnote {
+    color: hsla(199,0%,100%,0.8)
+}
+
+
+/*---------------------
+COMPONENTS
 ---------------------*/
 .stage {
     position: relative;

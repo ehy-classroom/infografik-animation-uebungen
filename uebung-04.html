@@ -8,11 +8,9 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
-
-
-:root {
-    --duration: 2s;
-}
+        :root {
+            --duration: 2s;
+        }
 
         /*clothes*/
         .dress,
@@ -31,7 +29,7 @@
             position: absolute;
             width: 30px;
             height: 200px;
-            top:0;
+            top: 0;
             left: 50px;
             /* border: 1px solid; */
             animation: move-clothes var(--duration) linear infinite;
@@ -83,15 +81,15 @@
             width: 32px;
             left: 0;
             top: 0;
-            animation: 
-            move-pieces var(--duration) linear infinite,
-            dress var(--duration) linear infinite;
-       
+            animation:
+                move-pieces var(--duration) linear infinite,
+                dress var(--duration) linear infinite;
+
         }
 
         @keyframes dress {
             0% {
-              rotate: 0deg;
+                rotate: 0deg;
 
             }
 
@@ -110,14 +108,14 @@
             width: 28px;
             left: 0;
             top: 0;
-            animation: 
-            move-pieces var(--duration) linear infinite,
-            jeans 3s linear infinite;
+            animation:
+                move-pieces var(--duration) linear infinite,
+                jeans 3s linear infinite;
         }
 
         @keyframes jeans {
             0% {
-              rotate: 0deg;
+                rotate: 0deg;
             }
 
             50% {
@@ -134,19 +132,17 @@
             width: 42px;
             left: 0;
             top: 0;
-            animation: 
-            move-pieces var(--duration) linear infinite,
-            socks 1s linear infinite;
+            animation:
+                move-pieces var(--duration) linear infinite,
+                socks 1s linear infinite;
         }
 
         @keyframes socks {
             0% {
-              rotate: 0deg;
+                rotate: 0deg;
             }
 
-            50% {
-             
-            }
+            50% {}
 
             100% {
                 rotate: 360deg;
@@ -162,7 +158,8 @@
             /* Breite angepasst */
             height: 30px;
             background-color: hsl(30, 50%, 50%);
-            clip-path: polygon(10% 100%, 90% 100%, 100% 0, 0 0);/* Trapezform */
+            clip-path: polygon(10% 100%, 90% 100%, 100% 0, 0 0);
+            /* Trapezform */
             animation: wiggle-basket 2s linear infinite;
         }
 
@@ -174,6 +171,7 @@
             94% {
                 transform: rotate(0deg);
             }
+
             96% {
                 transform: rotate(10deg);
             }
@@ -181,6 +179,7 @@
             98% {
                 transform: rotate(-10deg);
             }
+
             100% {
                 transform: rotate(0deg);
             }
@@ -214,8 +213,6 @@
             border-radius: 50%;
             overflow: hidden;
         }
-
-
     </style>
 
 </head>
@@ -240,8 +237,10 @@
         </div>
 
         <div class="basket"></div>
-        <div class="floor">
-        </div>
+        <div class="floor"></div>
+        <p class="footnote">Idee: Jeanine</p>
+    </div>
+
 </body>
 
 </html>
