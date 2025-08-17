@@ -1,4 +1,10 @@
-# infografik-animation-uebungen
+# Infografik/Animation, Übungen
+
+https://ehy-classroom.github.io/infografik-animation-uebungen/index.html
+
+Ennoy Hyttrek 
+ehy.training@gmail.com
+https://ennohyttrek.de
 
 
 ## Übersicht und Beschreibung der Übungsdateien
