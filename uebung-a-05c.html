@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Übung 5</title>
+	<link rel="stylesheet" href="style.css">
+
+	<style>
+		:root {
+			--color-rubber: hsl(0,89%,42%);
+			--color-rubber-hover: hsl(0,89%,55%);
+			--color-iron: hsl(199,21%,34%);
+			--color-iron-hover: hsl(199,21%,55%);
+		}
+		/* Basis-Stile für Ball und Boden – ohne CSS-Animationen */
+		#ball {
+			z-index: 10;
+			position: absolute;
+			top: 160px;
+			left: 280px;
+			width: 40px;
+			height: 40px;
+			transform-origin: 50% 100%;
+			border-radius: 50%;
+		}
+		#floor {
+			position: absolute;
+			top: 200px;
+			left: 0;
+			width: 100%;
+			height: 200px;
+			background-color: hsl(89, 5%, 55%);
+		}
+		.controls {
+			text-align: center;
+			margin: 20px 0;
+		}
+		.controls button {
+			padding: 0.5em 1em;
+			margin: 0 1em;
+			font-size: 0.8em;
+			cursor: pointer;
+			border: none;
+			border-radius: 1em;
+			color: white;
+			transition: background-color 0.3s;
+		}
+		#ironButton {
+			background-color: var(--color-iron);
+		}
+		#ironButton:hover {
+			background-color: var(--color-iron-hover);
+		}
+		#rubberButton {
+			background-color: var(--color-rubber);
+		}
+		#rubberButton:hover {
+			background-color: var(--color-rubber-hover);
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<p><a href="index.html">Zurück zur Übersicht</a></p>
+		<h1>Übung 5: Szenenwechsel, C</h1>
+		<p>Variante C, die Animation wird nicht durch CSS-Animationen, sondern durch JavaScript (<em>Web Animations API</em>) erzeugt. Die Steuerung der ANimation erfolgt wie in Variante B</p>
+	</header>
+	<div class="stage">
+		<div id="ball"></div>
+		<div id="floor"></div>
+	</div>
+	<div class="controls">
+		<button id="ironButton">Ball aus Eisen</button>
+		<button id="rubberButton">Ball aus Gummi</button>
+	</div>
+	<script>
+		// Keyframes-Definitionen (exakt wie in der CSS-Version)
+
+		// bounce-rubber: 1s, linear, infinite
+		const bounceRubberKeyframes = [
+			{ top: '30px', transform: 'scale(1,1)', offset: 0, easing: 'ease-out' },
+			{ top: '160px', transform: 'scale(1,1)', offset: 0.3 },
+			{ top: '160px', transform: 'scale(2,0.5)', offset: 0.5 },
+			{ top: '160px', transform: 'scale(0.3,2.5)', offset: 0.7, easing: 'ease-in' },
+			{ top: '40px', transform: 'scale(1,1)', offset: 0.9 },
+			{ top: '30px', transform: 'scale(1,1)', offset: 1 }
+		];
+
+		// bounce-iron: 0.5s, linear, 1 Iteration
+		const bounceIronKeyframes = [
+			{ top: '30px', transform: 'scale(1,1)', offset: 0 },
+			{ top: '30px', transform: 'scale(1,1)', offset: 0.8, easing: 'ease-out' },
+			{ top: '163px', transform: 'scale(1,1)', offset: 0.9 },
+			{ top: '158px', transform: 'scale(1,1)', offset: 0.92 },
+			{ top: '160px', transform: 'scale(1,1)', offset: 1 }
+		];
+
+		// bounce-floor: 0.5s, linear, 1 Iteration
+		const bounceFloorKeyframes = [
+			{ top: '200px', offset: 0 },
+			{ top: '200px', offset: 0.89 },
+			{ top: '203px', offset: 0.90 },
+			{ top: '198px', offset: 0.92 },
+			{ top: '200px', offset: 1 }
+		];
+
+		// Dauerangaben in Millisekunden
+		const durationRubber = 1000;
+		const durationIron = 500;
+		const durationFloor = 500;
+
+		// Elementreferenzen
+		const ball = document.getElementById('ball');
+		const floor = document.getElementById('floor');
+		const ironButton = document.getElementById('ironButton');
+		const rubberButton = document.getElementById('rubberButton');
+
+		// Zustandsvariablen
+		let currentMode = 'iron'; // "iron" oder "rubber"
+		let rubberAnimation = null;
+		let pendingIronSwitchTimeout = null;
+		let isSwitchingToIron = false;
+
+		// Funktion: Iron-Animationen starten (Ball und Boden)
+		function startIronAnimations() {
+			if (pendingIronSwitchTimeout) {
+				clearTimeout(pendingIronSwitchTimeout);
+				pendingIronSwitchTimeout = null;
+			}
+			isSwitchingToIron = false;
+			// Falls eine Rubber-Animation läuft, abbrechen
+			if (rubberAnimation) {
+				rubberAnimation.cancel();
+				rubberAnimation = null;
+			}
+			// Hintergrundfarbe des Balls auf Iron setzen
+			ball.style.backgroundColor = "var(--color-iron)";
+			// Starte die Ball-Iron-Animation (eine Iteration, fill 'forwards' hält den Endzustand)
+			ball.animate(bounceIronKeyframes, {
+				duration: durationIron,
+				easing: 'linear',
+				fill: 'forwards'
+			});
+			// Starte die Boden-Animation
+			floor.animate(bounceFloorKeyframes, {
+				duration: durationFloor,
+				easing: 'linear',
+				fill: 'forwards'
+			});
+			currentMode = 'iron';
+		}
+
+		// Funktion: Rubber-Animation starten (Ball, infinite; Boden bleibt statisch)
+		function startRubberAnimation() {
+			if (pendingIronSwitchTimeout) {
+				clearTimeout(pendingIronSwitchTimeout);
+				pendingIronSwitchTimeout = null;
+			}
+			isSwitchingToIron = false;
+			// Hintergrundfarbe des Balls auf Rubber setzen
+			ball.style.backgroundColor = "var(--color-rubber)";
+			// Starte die Ball-Rubber-Animation (infinite Iterationen)
+			rubberAnimation = ball.animate(bounceRubberKeyframes, {
+				duration: durationRubber,
+				easing: 'linear',
+				iterations: Infinity,
+				fill: 'forwards'
+			});
+			// Setze den Boden in den Ruhezustand
+			floor.style.top = '200px';
+			currentMode = 'rubber';
+		}
+
+		// Event-Listener für den "Ball aus Eisen"-Button
+		ironButton.addEventListener('click', () => {
+			if (currentMode === 'rubber' && !isSwitchingToIron && rubberAnimation) {
+				isSwitchingToIron = true;
+				// Berechne die verbleibende Zeit der aktuellen Rubber-Iteration
+				let currentTime = rubberAnimation.currentTime || 0;
+				let remaining = durationRubber - (currentTime % durationRubber);
+				pendingIronSwitchTimeout = setTimeout(() => {
+					startIronAnimations();
+				}, remaining);
+			}
+			// Bei bereits aktivem Iron-Modus: nichts tun
+		});
+
+		// Event-Listener für den "Ball aus Gummi"-Button
+		rubberButton.addEventListener('click', () => {
+			if (pendingIronSwitchTimeout) {
+				clearTimeout(pendingIronSwitchTimeout);
+				pendingIronSwitchTimeout = null;
+			}
+			isSwitchingToIron = false;
+			if (currentMode !== 'rubber') {
+				startRubberAnimation();
+			}
+		});
+
+		// Beim Laden der Seite initial die Iron-Animation (einmalig) starten
+		startIronAnimations();
+	</script>
+</body>
+</html>

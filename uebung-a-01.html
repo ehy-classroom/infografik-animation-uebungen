@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Übung 1</title>
+	<link rel="stylesheet" href="style.css">
+
+	<style>
+
+		.zeiger-min {
+			z-index: 10;
+			position: absolute;
+			width: 20px;
+			height: 80px;
+			background: red;
+			top: 50%;
+			left: 50%;
+			transform-origin: 50% 0;
+			animation: rotate-min 60s linear infinite;
+		}
+
+		@keyframes rotate-min {
+			0% {
+				transform: rotate(0deg);
+				background: red;
+			}
+
+			50% {
+				background: blue;
+			}
+
+			100% {
+				transform: rotate(360deg);
+				background: red;
+			}
+		}
+
+		.zeiger-sec {
+			position: absolute;
+			width: 10px;
+			height: 100px;
+			background: orange;
+			top: 50%;
+			left: 50%;
+			transform-origin: 50% 0;
+			animation: rotate-sec 10s linear infinite;
+		}
+
+		@keyframes rotate-sec {
+			0% {
+				transform: rotate(0deg);
+				background: red;
+			}
+
+			50% {
+				background: blue;
+			}
+
+			100% {
+				transform: rotate(360deg);
+				background: red;
+			}
+		}
+	</style>
+
+</head>
+
+<body class="uebung">
+	<header>
+		<p><a href="index.html">Zurück zur Übersicht</a></p>
+		<h1>Übung 1: Uhrzeiger</h1>
+	</header>
+	<div class="stage">
+		<div class="zeiger-min"></div>
+		<div class="zeiger-sec"></div>
+	</div>
+</body>
+
+</html>
